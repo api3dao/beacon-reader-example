@@ -1,5 +1,10 @@
-import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-ethers";
+import { HardhatUserConfig, task } from "hardhat/config";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { PROVIDER_URL, MNEMONIC } = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -17,15 +22,14 @@ const config: HardhatUserConfig = {
   solidity: "0.8.9",
   networks: {
     ropsten: {
-      url: "https://eth-ropsten.gateway.pokt.network/v1/lb/61d5f1ff1a94ee003a8e070c",
+      url: PROVIDER_URL,
       accounts: {
-        mnemonic:
-          "tube spin artefact salad slab lumber foot bitter wash reward vote cook",
+        mnemonic: MNEMONIC,
       },
     },
   },
   mocha: {
-    timeout: 100000,
+    timeout: 60000,
   },
 };
 
