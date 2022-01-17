@@ -5,7 +5,8 @@
 This project is composed of the following:
 
 1. A test that uses a mocked RrpBeaconServer to simulate reading a beacon value from a smart contract.
-1. A script to deploy the BeaconReaderExample contract to any network. This script will set the address of the RrpBeaconServer contract deployed on the selected network and after the script finishes it will display the address of the contract deployed but also save this address to `deployments` directory on the root of this repo. If selected network is not `hardhat` or `localhost` then this address must be then whitelisted by the RrpBeaconServer manager account prior to reading the beacon value.
+1. A script to deploy the BeaconReaderExample contract to any network. This script will set the address of the RrpBeaconServer contract deployed on the selected network and after the script finishes it will display the address of the contract deployed but also save this address to `deployments` directory on the root of this repo (except for hardhat network since this network is started and stop just for the duration of the script execution).
+1. A script to read the beacon value from the deployed contract. If selected network is not `hardhat` or `localhost` then this address must be then whitelisted by the RrpBeaconServer manager account prior to reading the beacon value.
 
 ## Instructions
 
@@ -20,19 +21,19 @@ Now depending on the network you are using you will need to do the following:
 
 ### Default network
 
-Simplest way to test this project is by using the integrated [Hardhat network](https://hardhat.org/hardhat-network/) and not extra steps are needed in this case to run both the test and the deployment script.
+Simplest way to test this project is by using the integrated [Hardhat network](https://hardhat.org/hardhat-network/) and not extra steps are needed in this case to run both the test and the scripts.
 
 #### Test
 
 ```sh
-hardhat test test/BeaconReaderExample.test.js
+npx hardhat test test/BeaconReaderExample.test.js
 ```
 
 #### Script
 
 ```sh
-hardhat run scripts/deploy.js
-hardhat run scripts/read-beacon.js
+npx hardhat run scripts/deploy.js
+npx hardhat run scripts/read-beacon.js
 ```
 
 ### Localhost network
@@ -46,14 +47,14 @@ hardhat node
 #### Test
 
 ```sh
-hardhat test test/BeaconReaderExample.test.js --network localhost
+npx hardhat test test/BeaconReaderExample.test.js --network localhost
 ```
 
 #### Script
 
 ```sh
-hardhat run scripts/deploy.js --network localhost
-hardhat run scripts/read-beacon.js --network localhost
+npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run scripts/read-beacon.js --network localhost
 ```
 
 ### Remote networks
@@ -65,14 +66,14 @@ For instance if you wanted to deploy the contract on [Polygon Mumbai Testnet](ht
 #### Test
 
 ```sh
-hardhat test test/BeaconReaderExample.test.js --network polygon-mumbai
+npx hardhat test test/BeaconReaderExample.test.js --network polygon-mumbai
 ```
 
 #### Script
 
 ```sh
-hardhat run scripts/deploy.js --network polygon-mumbai
-hardhat run scripts/read-beacon.js --network polygon-mumbai
+npx hardhat run scripts/deploy.js --network polygon-mumbai
+npx hardhat run scripts/read-beacon.js --network polygon-mumbai
 ```
 
 **WARNING:** Please note that whatever value you set for `NETWORK` in the .env file must match a file name within the `./services/data/beacons/0.3.1/` directory. This is because the script will try to find the address of an already deployed RrpBeaconServer contract on the selected network.

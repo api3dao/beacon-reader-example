@@ -21,8 +21,8 @@ async function main() {
   let rrpBeaconServerAddress;
 
   if (
-    network.toLocaleLowerCase() === "hardhat" ||
-    network.toLocaleLowerCase() === "localhost"
+    network.toLowerCase() === "hardhat" ||
+    network.toLowerCase() === "localhost"
   ) {
     // Deploy RrpBeaconServerMock contract
     const RrpBeaconServerMock = await ethers.getContractFactory(
@@ -52,21 +52,23 @@ async function main() {
   // Output the contract address to the console
   console.log("BeaconReaderExample deployed to:", beaconReaderExample.address);
 
-  // Save the contract address to a file
-  const destinationDir = "./deployments";
-  try {
-    fs.mkdirSync(destinationDir, { recursive: true });
-  } catch (e) {
-    console.log("Cannot create folder ", e);
+  if (network.toLowerCase() !== "hardhat") {
+    // Save the contract address to a file
+    const destinationDir = "./deployments";
+    try {
+      fs.mkdirSync(destinationDir, { recursive: true });
+    } catch (e) {
+      console.log("Cannot create folder ", e);
+    }
+    fs.writeFileSync(
+      path.join(destinationDir, `${network}.json`),
+      JSON.stringify(
+        { beaconReaderExampleAddress: beaconReaderExample.address },
+        null,
+        2
+      )
+    );
   }
-  fs.writeFileSync(
-    path.join(destinationDir, `${network}.json`),
-    JSON.stringify(
-      { beaconReaderExampleAddress: beaconReaderExample.address },
-      null,
-      2
-    )
-  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
