@@ -21,7 +21,7 @@ Now depending on the network you are using you will need to do the following:
 
 ### Default network
 
-Simplest way to test this project is by using the integrated [Hardhat network](https://hardhat.org/hardhat-network/) and not extra steps are needed in this case to run both the test and the scripts.
+The simplest way to test this project is by using the integrated [Hardhat network](https://hardhat.org/hardhat-network/), in which case no extra steps are needed to run both the test and the scripts.
 
 #### Test
 
@@ -41,7 +41,7 @@ npx hardhat run scripts/read-beacon.js
 You could also start a local ethreum node by running the following command on a separate terminal:
 
 ```sh
-hardhat node
+npx hardhat node
 ```
 
 #### Test

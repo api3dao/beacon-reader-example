@@ -6,15 +6,16 @@ import "@api3/airnode-protocol/contracts/rrp/requesters/interfaces/IRrpBeaconSer
 contract BeaconReaderExample {
     IRrpBeaconServer public immutable rrpBeaconServer;
 
-    constructor(address _rrpBeaconServerAddress) public {
+    constructor(address _rrpBeaconServerAddress) {
         require(_rrpBeaconServerAddress != address(0), "Zero address");
         rrpBeaconServer = IRrpBeaconServer(_rrpBeaconServerAddress);
     }
 
-    function readBeacon(bytes32 _beaconId) public view returns (int224) {
-        (int224 value, uint32 timestamp) = rrpBeaconServer.readBeacon(
-            _beaconId
-        );
-        return value;
+    function readBeacon(bytes32 _beaconId)
+        public
+        view
+        returns (int224 value, uint256 timestamp)
+    {
+        (value, timestamp) = rrpBeaconServer.readBeacon(_beaconId);
     }
 }

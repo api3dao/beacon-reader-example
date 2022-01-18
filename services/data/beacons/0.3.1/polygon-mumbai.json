@@ -1,6 +1,6 @@
 {
   "contracts": {
-    "@api3/airnode-protocol/contracts/rrp/requesters/RrpBeaconServer": "0x36aab914fAA2B3Bb396BAF067603b959bEcf1B49"
+    "@api3/airnode-protocol/contracts/rrp/requesters/RrpBeaconServer": "0xFF298a3169117606BDA78eD6C04917224968f9b5"
   },
   "beacons": [
     {

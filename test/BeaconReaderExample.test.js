@@ -21,8 +21,8 @@ describe("BeaconReaderExample", function () {
 
     // Read beacon value
     const beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
-    const value = await beaconReaderExample.readBeacon(beaconId);
+    const [value] = await beaconReaderExample.readBeacon(beaconId);
 
-    expect(value.toNumber()).to.equal(123456789);
+    expect(value.toString()).to.equal("1234567890");
   });
 });

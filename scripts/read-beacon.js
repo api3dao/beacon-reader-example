@@ -51,7 +51,14 @@ async function main() {
     beaconId = deployments.beacons[0].beaconId;
   }
 
-  console.log("Beacon value: ", await beaconReaderExample.readBeacon(beaconId));
+  try {
+    console.log(
+      "Beacon value: ",
+      await beaconReaderExample.readBeacon(beaconId)
+    );
+  } catch (e) {
+    console.error(e.error || e);
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

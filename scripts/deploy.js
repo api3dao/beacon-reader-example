@@ -49,8 +49,13 @@ async function main() {
   );
   await beaconReaderExample.deployed();
 
+  // This solves the bug in Mumbai network where the contract address is not the real one
+  const txHash = beaconReaderExample.deployTransaction.hash;
+  console.log(`Tx hash: ${txHash}\nWaiting for transaction to be mined...`);
+  const txReceipt = await ethers.provider.waitForTransaction(txHash);
+
   // Output the contract address to the console
-  console.log("BeaconReaderExample deployed to:", beaconReaderExample.address);
+  console.log("BeaconReaderExample deployed to:", txReceipt.contractAddress);
 
   if (network.toLowerCase() !== "hardhat") {
     // Save the contract address to a file

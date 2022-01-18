@@ -57,7 +57,8 @@ contract RrpBeaconServerMock is IRrpBeaconServer {
         returns (int224 value, uint32 timestamp)
     {
         // Any caller can read the beacon
-        return (123456789, uint32(block.timestamp));
+        value = int224(1234567890);
+        timestamp = uint32(block.timestamp);
     }
 
     function readerCanReadBeacon(bytes32 beaconId, address reader)
