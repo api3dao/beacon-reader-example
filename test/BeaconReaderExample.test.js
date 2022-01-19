@@ -14,15 +14,25 @@ describe("BeaconReaderExample", function () {
     const BeaconReaderExample = await ethers.getContractFactory(
       "BeaconReaderExample"
     );
-    const beaconReaderExample = await BeaconReaderExample.deploy(
+    let beaconReaderExample = await BeaconReaderExample.deploy(
       rrpBeaconServerMock.address
     );
     await beaconReaderExample.deployed();
 
-    // Read beacon value
+    // This solves the bug in polygon-mumbai network where the contract address is not the real one
+    const txHash = beaconReaderExample.deployTransaction.hash;
+    console.log(`Tx hash: ${txHash}\nWaiting for transaction to be mined...`);
+    const txReceipt = await ethers.provider.waitForTransaction(txHash);
+    beaconReaderExample = await hre.ethers.getContractAt(
+      "BeaconReaderExample",
+      txReceipt.contractAddress
+    );
     const beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
-    const [value] = await beaconReaderExample.readBeacon(beaconId);
 
-    expect(value.toString()).to.equal("1234567890");
+    // Reading the beacon value after 5 seconds just to give enough time to polygon-mumbai network to be ready
+    setTimeout(async function () {
+      const [value] = await beaconReaderExample.readBeacon(beaconId);
+      expect(value.toString()).to.equal("1234567890");
+    }, 5000);
   });
 });

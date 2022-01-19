@@ -68,7 +68,7 @@ async function main() {
     fs.writeFileSync(
       path.join(destinationDir, `${network}.json`),
       JSON.stringify(
-        { beaconReaderExampleAddress: beaconReaderExample.address },
+        { beaconReaderExampleAddress: txReceipt.contractAddress },
         null,
         2
       )

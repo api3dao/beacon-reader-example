@@ -12,7 +12,7 @@ contract BeaconReaderExample {
     }
 
     function readBeacon(bytes32 _beaconId)
-        public
+        external
         view
         returns (int224 value, uint256 timestamp)
     {
