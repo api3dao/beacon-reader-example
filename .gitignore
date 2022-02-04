@@ -1,0 +1,12 @@
+# Project dependencies
+node_modules
+
+# User secrets
+.env
+
+# Hardhat files
+cache
+artifacts
+
+# Deployments directory is created when the contracts are deployed
+deployments
