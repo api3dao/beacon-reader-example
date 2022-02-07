@@ -29,17 +29,6 @@ npm install
 yarn install
 ```
 
-### Temporary instructions until services is properly published
-
-Because [services package](https://github.com/api3dao/services) is installed as
-github URL it doesn't contain the built javascript files that are expected to be
-in the downloaded dependency (when downloading from npm). The workaround for now
-is to build it manually, using the following:
-
-1. `cd node_modules/@api3/services`
-2. `yarn install`
-3. `yarn build`
-
 The beacon reader app can be run on multiple networks. Read the section below
 for more details.
 
@@ -108,8 +97,9 @@ yarn test --network polygon-mumbai
 #### Script
 
 Use these scripts to deploy smart contracts to the target chain and to read the
-beacon value. Since you are using a remote network you also need to whitelist
-the beacon reader before attempting to call `read-beacon` script.
+beacon value for the `eth_usd` endpoint. Since you are using a remote network
+you also need to whitelist the beacon reader before attempting to call
+`read-beacon` script.
 
 **WARNING:** Please note that whatever value you set for `NETWORK` in the `.env`
 file must match a file name within the `@api3/services` repository. This is
