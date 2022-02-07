@@ -29,7 +29,7 @@ npm install
 yarn install
 ```
 
-### Temporary instructions until servies is properly published
+### Temporary instructions until services is properly published
 
 Because [services package](https://github.com/api3dao/services) is installed as
 github URL it doesn't contain the built javascript files that are expected to be
