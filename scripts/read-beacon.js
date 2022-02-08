@@ -1,36 +1,21 @@
-const hre = require("hardhat");
 const fs = require("fs");
+const hre = require("hardhat");
+const { getServiceData } = require("@api3/services");
 
 async function main() {
   const network = hre.network.name;
 
-  // Read BeaconReaderExample contract address deployed using deploy.js
+  // Read BeaconReaderExample contract address from deployments files
   let beaconReaderExampleAddress = null;
-  if (network.toLowerCase() === "hardhat") {
-    // In case of hardhat network we must re-deploy the contracts
-    const RrpBeaconServerMock = await ethers.getContractFactory(
-      "RrpBeaconServerMock"
+  try {
+    const parseResult = JSON.parse(
+      fs.readFileSync(`./deployments/${network}.json`).toString()
     );
-    const rrpBeaconServerMock = await RrpBeaconServerMock.deploy();
-    await rrpBeaconServerMock.deployed();
-    const BeaconReaderExample = await ethers.getContractFactory(
-      "BeaconReaderExample"
-    );
-    const beaconReaderExample = await BeaconReaderExample.deploy(
-      rrpBeaconServerMock.address
-    );
-    await beaconReaderExample.deployed();
-    beaconReaderExampleAddress = beaconReaderExample.address;
-  } else {
-    try {
-      ({ beaconReaderExampleAddress } = JSON.parse(
-        fs.readFileSync(`./deployments/${network}.json`).toString()
-      ));
-      if (!beaconReaderExampleAddress) throw new Error("beaconId not found");
-    } catch (e) {
-      console.log(`Error: ${e}. Please try first running deploy script`);
-      return;
-    }
+    beaconReaderExampleAddress = parseResult.beaconReaderExampleAddress;
+    if (!beaconReaderExampleAddress) throw new Error("beaconId not found");
+  } catch (e) {
+    console.log(`Error: ${e}. Please try first running deploy script`);
+    return;
   }
 
   const beaconReaderExample = await hre.ethers.getContractAt(
@@ -38,26 +23,32 @@ async function main() {
     beaconReaderExampleAddress
   );
 
-  if (
-    network.toLowerCase() === "hardhat" ||
-    network.toLowerCase() === "localhost"
-  ) {
+  if (network.toLowerCase() === "localhost") {
     // Uses RrpBeaconServerMock contract so any value would work
     beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
   } else {
-    // TODO: replace with path to services repo
-    // Make sure to first whitelist BeaconReaderExample contract in RrpBeaconServer
-    const deployments = require(`../services/data/beacons/0.3.1/${network}.json`);
-    beaconId = deployments.beacons[0].beaconId;
+    const deployments = getServiceData("Amberdata", "eth_usd", network);
+    beaconId = deployments.beacon.beaconId;
   }
 
   try {
-    console.log(
-      "Beacon value: ",
-      await beaconReaderExample.readBeacon(beaconId)
-    );
+    // Read the beacon and print out the raw response returned by ethers
+    const response = await beaconReaderExample.readBeacon(beaconId);
+    console.log("Raw beacon response:");
+    console.log(response);
+    console.log();
+
+    // The ethers response is combined array and object with BigInteger
+    // values. There are two values returned:
+    //  1. value - the actual value of the beacon
+    //  2. timestamp - unix timestamp, specifying when was the beacon
+    //     value updated
+    const value = response.value.toString();
+    const timestamp = response.timestamp.toNumber();
+    const userFriendlyDate = new Date(timestamp * 1000).toLocaleString();
+    console.log(`Beacon value: ${value}, timestamp: ${userFriendlyDate}.`);
   } catch (e) {
-    console.error(e.error || e);
+    console.error(e);
   }
 }
 
