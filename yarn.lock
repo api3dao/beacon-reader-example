@@ -17,10 +17,10 @@
   dependencies:
     ethers "^5.4.4"
 
-"@api3/services@^0.1.1":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@api3/services/-/services-0.1.2.tgz#260345ba17b7a89d8c10c27e87c34587c4383c5d"
-  integrity sha512-0FU2qO7we35/8xZov9UOjEpK+Wxy+rgOQ7CVlDYcwG/OciQeFyvDq8k0MI0zhkBL222jbjmrQ4NiQ3HyhJk++w==
+"@api3/services@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@api3/services/-/services-0.1.3.tgz#2e10b46f4ac8c3d6d8f536035e6385f662cd31f9"
+  integrity sha512-YQzHI3WgBBVgoLuW3k2eRmUJDjATMLa1ZKVN896QdLZZcEf6QjHlrdKXTgKhu73FFoWVa1m5iDSi+9MCF3a6yw==
   dependencies:
     "@api3dao/operations" api3dao/operations
     "@api3dao/utility-contracts" api3dao/utility-contracts

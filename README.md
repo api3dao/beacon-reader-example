@@ -3,8 +3,8 @@
 > A starter project for reading beacon values from a smart contract
 
 This project was created by the `create-beacon-reader-app` CLI from the
-[services repo](https://github.com/api3dao/services). This project is composed
-of the following:
+[services repository](https://github.com/api3dao/services). This project is
+composed of the following:
 
 1. A test that uses a mocked `RrpBeaconServer` contract to simulate reading a
    beacon value from a smart contract.
@@ -48,7 +48,7 @@ yarn eth-node
 The test command will run the tests defined in the `test` directory.
 
 ```sh
-npm run test --network localhost
+npm run test -- --network localhost
 # or
 yarn test --network localhost
 ```
@@ -65,8 +65,8 @@ local chain automatically (using the default configuration). It will also
 provide funded accounts to run the scripts below.
 
 ```sh
-npm run deploy --network localhost
-npm run read-beacon --network localhost
+npm run deploy -- --network localhost
+npm run read-beacon -- --network localhost
 # or
 yarn deploy --network localhost
 yarn read-beacon --network localhost
@@ -89,7 +89,7 @@ also set the `MNEMONIC` of an account that needs to have enough funds.
 The test command will run the tests defined in the `test` directory.
 
 ```sh
-npm run test --network polygon-mumbai
+npm run test -- --network polygon-mumbai
 # or
 yarn test --network polygon-mumbai
 ```
@@ -107,9 +107,9 @@ because the script does not deploy the mocked `RrpBeaconServer`, but instead
 connects to an existing `RrpBeaconServer` provided by API3.
 
 ```sh
-npm run deploy --network polygon-mumbai
-npm run whitelist-reader --network polygon-mumbai
-npm run read-beacon --network polygon-mumbai
+npm run deploy -- --network polygon-mumbai
+npm run whitelist-reader -- --network polygon-mumbai
+npm run read-beacon -- --network polygon-mumbai
 # or
 yarn deploy --network polygon-mumbai
 yarn whitelist-reader --network polygon-mumbai
