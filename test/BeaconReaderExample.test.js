@@ -1,29 +1,43 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("BeaconReaderExample", function () {
-  it("Should return the beacon value", async function () {
-    // Deploy RrpBeaconServerMock contract
-    const RrpBeaconServerMock = await ethers.getContractFactory(
-      "RrpBeaconServerMock"
-    );
-    const rrpBeaconServerMock = await RrpBeaconServerMock.deploy();
-    await rrpBeaconServerMock.deployed();
+let mockRrpBeaconServer, beaconReaderExample;
 
-    // Deploy BeaconReaderExample contract
-    const BeaconReaderExample = await ethers.getContractFactory(
-      "BeaconReaderExample"
-    );
-    let beaconReaderExample = await BeaconReaderExample.deploy(
-      rrpBeaconServerMock.address
-    );
-    await beaconReaderExample.deployed();
+beforeEach(async () => {
+  const mockRrpBeaconServerFactory = await ethers.getContractFactory(
+    "MockRrpBeaconServer"
+  );
+  mockRrpBeaconServer = await mockRrpBeaconServerFactory.deploy();
+  const beaconReaderExampleFactory = await ethers.getContractFactory(
+    "BeaconReaderExample"
+  );
+  beaconReaderExample = await beaconReaderExampleFactory.deploy(
+    mockRrpBeaconServer.address
+  );
+});
 
-    // Try reading the value
-    const beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
-    const [value] = await beaconReaderExample.readBeacon(beaconId);
+describe("readBeacon", function () {
+  describe("BeaconReaderExample is whitelisted", function () {
+    it("reads the beacon value", async function () {
+      // Mock-set a value
+      const beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
+      const beaconValue = 123456;
+      const beaconTimestamp = Math.floor(Date.now() / 1000);
+      await mockRrpBeaconServer.setBeacon(beaconId, beaconValue, beaconTimestamp);
 
-    // Assert that the value is the value returned by "RrpBeaconServerMock"
-    expect(value.toString()).to.equal("1234567890");
+      // Read the value back
+      const beacon = await beaconReaderExample.readBeacon(beaconId);
+      expect(beacon.value).to.equal(beaconValue);
+      expect(beacon.timestamp).to.equal(beaconTimestamp);
+    });
+  });
+  describe("BeaconReaderExample is not whitelisted", function () {
+    it("reverts", async function () {
+      // Simulate not being whitelisted
+      await mockRrpBeaconServer.setRevertBeaconReadsStatus(true);
+
+      const beaconId = ethers.utils.hexlify(ethers.utils.randomBytes(32));
+      await expect(beaconReaderExample.readBeacon(beaconId)).to.be.revertedWith("Caller not whitelisted");
+    });
   });
 });

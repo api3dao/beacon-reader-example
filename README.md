@@ -1,117 +1,81 @@
 # Beacon Reader Example
 
-> A starter project for reading beacon values from a smart contract
+> An example project for reading beacon values from a smart contract
 
-This project was created by the `create-beacon-reader-app` CLI from the
-[services repository](https://github.com/api3dao/services). This project is
-composed of the following:
-
-1. A test that uses a mocked `RrpBeaconServer` contract to simulate reading a
-   beacon value from a smart contract.
-2. A script to deploy the BeaconReaderExample contract to any network. This
-   script will set the address of the `RrpBeaconServer` contract deployed on the
-   selected network and after the script finishes it will display the address of
-   the contract deployed but also save this address to `deployments` directory
-   in the root of this repo.
-3. A script to whitelist the beacon reader in order to be able to read the
-   beacon value from the target beacon. If the selected network is `localhost`
-   then using running this script is not necessary since the `RrpBeaconServer`
-   is mocked and returns mocked value independently of the whitelist status.
-4. A script to read the beacon value from the deployed contract.
+1. Tests that use a `MockRrpBeaconServer` contract to simulate reading a
+   beacon.
+2. A script to deploy the `BeaconReaderExample` contract to one of the supported
+   networks. This script will use the address of the `RrpBeaconServer` contract
+   deployed on the selected network. You can see the `deployments/` directory for
+   the address of the deployed contract.
+3. A script to whitelist `BeaconReaderExample` for it to be able to read a specific beacon.
+4. A script to have `BeaconReaderExample` read the beacon.
 
 ## Instructions
 
-Run the following to install the dependencies
+_You are recommended to follow our [docs](https://docs.api3.org/beacon/v0.1/introduction/hackathon.html) instead._
+
+Install the dependencies:
 
 ```sh
 npm install
-# or
-yarn install
 ```
 
-The beacon reader app can be run on multiple networks. Read the section below
-for more details.
+### Tests
 
-### Localhost network
+Run the unit tests defined in the `test/` directory:
 
-First, you need to start a local ethereum node by running the following command
-on a separate terminal:
+```sh
+npm run test
+```
+
+### Network: `localhost`
+
+Start a local Ethereum node on a separate terminal:
 
 ```sh
 npm run eth-node
-# or
-yarn eth-node
 ```
 
-#### Test
-
-The test command will run the tests defined in the `test` directory.
+Deploy `MockRrpBeaconServer`, `BeaconReaderExample`, and mock-set a beacon value:
 
 ```sh
-npm run test -- --network localhost
-# or
-yarn test --network localhost
+npm run deploy:localhost
 ```
 
-#### Script
+You can skip the whitelisting step on `localhost`. 
 
-Use these scripts to deploy smart contracts to the target chain and to read the
-beacon value. Since you are using the localhost network and mocked
-`RrpBeaconServer`, there is no need whitelist the reader before running the
-`read-beacon` script.
-
-You also do not need to edit the `.env` file, since hardhat will connect to the
-local chain automatically (using the default configuration). It will also
-provide funded accounts to run the scripts below.
+Have `BeaconReaderExample` read the mocked beacon value and print it on the terminal:
 
 ```sh
-npm run deploy -- --network localhost
-npm run read-beacon -- --network localhost
-# or
-yarn deploy --network localhost
-yarn read-beacon --network localhost
+npm run read-beacon:localhost
 ```
 
-### Remote networks
+### Networks: `ropsten`, `rinkeby`, `goerli`, `polygon-mumbai`
 
-This will require that you set some parameters in an `.env` file. You could copy
-the [.env.example](./.env.example) file in the root of this repo and replace the
-placeholders with valid values.
+Create a `credentials.json` file at the root of the repo, similar to `credentials.example.json`.
+Fill in the blockchain provider URL (e.g., `https://rpc-mumbai.matic.today` for `polygon-mumbai`).
+Fill in the mnemonic with one that belongs to a wallet that you have funded using a faucet.
 
-For instance if you wanted to deploy the contract on
-[Polygon Mumbai Testnet](https://docs.polygon.technology/docs/develop/network-details/network/)
-you will need to set `NETWORK=polygon-mumbai` and
-`PROVIDER_URL=https://rpc-mumbai.matic.today`. Keep in mind that you'll need to
-also set the `MNEMONIC` of an account that needs to have enough funds.
-
-#### Test
-
-The test command will run the tests defined in the `test` directory.
+Deploy `BeaconReaderExample` that is pointed to the pre-deployed `RrpBeaconServer`:
 
 ```sh
-npm run test -- --network polygon-mumbai
-# or
-yarn test --network polygon-mumbai
+npm run deploy:polygon-mumbai
 ```
 
-#### Script
-
-Use these scripts to deploy smart contracts to the target chain and to read the
-beacon value for the `eth_usd` endpoint. Since you are using a remote network
-you also need to whitelist the beacon reader before attempting to call
-`read-beacon` script.
-
-**WARNING:** Please note that whatever value you set for `NETWORK` in the `.env`
-file must match a file name within the `@api3/services` repository. This is
-because the script does not deploy the mocked `RrpBeaconServer`, but instead
-connects to an existing `RrpBeaconServer` provided by API3.
+Whitelist the `BeaconReaderExample` you have deployed for the `eth_usd` beacon powered by Amberdata:
 
 ```sh
-npm run deploy -- --network polygon-mumbai
-npm run whitelist-reader -- --network polygon-mumbai
-npm run read-beacon -- --network polygon-mumbai
-# or
-yarn deploy --network polygon-mumbai
-yarn whitelist-reader --network polygon-mumbai
-yarn read-beacon --network polygon-mumbai
+npm run whitelist-reader:polygon-mumbai
 ```
+
+Have `BeaconReaderExample` read the beacon value and print it on the terminal:
+
+```sh
+npm run read-beacon:polygon-mumbai
+```
+
+You can replace `polygon-mumbai` with `ropsten`, `rinkeby` or `goerli` to work on one of these networks.
+
+You can read beacons other than `eth_usd` by modifying `scripts/whitelist-reader.js` and `scripts/read-beacon.js`.
+Refer to the [docs](https://docs.api3.org/beacon/v0.1/reference/beacon-ids.html) for a complete list.
