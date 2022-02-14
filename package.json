@@ -33,6 +33,6 @@
     "hardhat-deploy": "^0.10.5"
   },
   "dependencies": {
-    "@api3/services": "^0.1.5"
+    "@api3/services": "^0.1.6"
   }
 }

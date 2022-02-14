@@ -27,7 +27,7 @@ async function main() {
     // Use the beacon ID mocked in the deployment script
     beaconId = "0x1234567890123456789012345678901234567890123456789012345678901234";
   } else {
-    const serviceData = getServiceData("Amberdata", "eth_usd", network);
+    const serviceData = getServiceData("Amberdata", "ETH/USD", network);
     beaconId = serviceData.beacon.beaconId;
   }
 

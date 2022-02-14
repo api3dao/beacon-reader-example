@@ -28,7 +28,7 @@ async function main() {
     beaconReaderExampleAddress
   );
 
-  const serviceData = getServiceData("Amberdata", "eth_usd", network);
+  const serviceData = getServiceData("Amberdata", "ETH/USD", network);
   const beaconId = serviceData.beacon.beaconId;
 
   const result = await whitelistBeaconReader(

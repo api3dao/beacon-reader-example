@@ -38,7 +38,7 @@ module.exports = async ({ deployments, getChainId }) => {
     log(`Mock-set beacon with ID ${beaconId} to value: ${beaconValue}, timestamp: ${beaconTimestamp}`);
   } else {
     // Use the pre-deployed RrpBeaconServer
-    const serviceData = getServiceData("Amberdata", "eth_usd", network);
+    const serviceData = getServiceData("Amberdata", "ETH/USD", network);
     rrpBeaconServerAddress = serviceData.contracts.RrpBeaconServer;
   }
 

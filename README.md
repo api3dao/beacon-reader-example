@@ -63,7 +63,7 @@ Deploy `BeaconReaderExample` that is pointed to the pre-deployed `RrpBeaconServe
 npm run deploy:polygon-mumbai
 ```
 
-Whitelist the `BeaconReaderExample` you have deployed for the `eth_usd` beacon powered by Amberdata:
+Whitelist the `BeaconReaderExample` you have deployed for the `ETH/USD` beacon powered by Amberdata:
 
 ```sh
 npm run whitelist-reader:polygon-mumbai
@@ -77,5 +77,5 @@ npm run read-beacon:polygon-mumbai
 
 You can replace `polygon-mumbai` with `ropsten`, `rinkeby` or `goerli` to work on one of these networks.
 
-You can read beacons other than `eth_usd` by modifying `scripts/whitelist-reader.js` and `scripts/read-beacon.js`.
+You can read beacons other than `ETH/USD` by modifying `scripts/whitelist-reader.js` and `scripts/read-beacon.js`.
 Refer to the [docs](https://docs.api3.org/beacon/v0.1/reference/beacon-ids.html) for a complete list.
